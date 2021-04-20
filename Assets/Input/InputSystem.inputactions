@@ -11,6 +11,14 @@
                     "id": "9931b12e-5ea1-4974-83f5-505a9eb09892",
                     "expectedControlType": "Button",
                     "processors": "",
+                    "interactions": "Tap"
+                },
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "0ddd926e-1635-4175-925b-6e3f742d5e3f",
+                    "expectedControlType": "Button",
+                    "processors": "",
                     "interactions": ""
                 }
             ],
@@ -23,6 +31,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "LMB",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "dbe09ec5-040b-4723-9140-045966031bf9",
+                    "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "93312185-5f4e-419a-92bf-a7bd16a2c35c",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

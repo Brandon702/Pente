@@ -29,7 +29,7 @@ public class GameController : MonoBehaviour
         }
         else
         {
-            Destroy(gameObject);
+            
         }
     }
     #endregion
@@ -41,27 +41,23 @@ public class GameController : MonoBehaviour
     [Header("Other variables")]
     public eState state = eState.TITLE;
     public GameObject gameOverPanel;
-    [Range(0,1)]public int difficulty = 0;
-    public List<GameObject> runes = new List<GameObject>();
-    public List<GameObject> easyRunes = new List<GameObject>();
-    public GameObject turnDisplay;
+    private GameObject turnDisplay;
+    public GameObject whiteStone;
+    public GameObject blackStone;
     //public GameObject winnerDisplay;
     public System.Random rand = new System.Random();
     public bool forceOnce = true;
+    public Grid grid;
 
     string currentPlayer;
     public TextMeshProUGUI playerTurn;
     public TextMeshProUGUI winner;
-    int runeRow;
     int selectedRow=99999;
     public InputSystem input;
 
     // Start is called before the first frame update
     void Start()
     {
-        DifficultyChanged();
-        foreach (var obj in runes)
-            obj.SetActive(false);
     }
 
     // Update is called once per frame
@@ -70,8 +66,7 @@ public class GameController : MonoBehaviour
         if (state == eState.MENU)
         {
             turnDisplay.SetActive(false);
-            foreach (var obj in runes)
-                obj.SetActive(false);
+
             forceOnce = true;
         }
 
@@ -79,23 +74,9 @@ public class GameController : MonoBehaviour
         if (state == eState.GAME)
         {
             //If on menu state deactivate
-            
 
             if (forceOnce == true)
             {
-                
-                if (difficulty == 0)
-                {
-                    foreach (var obj in easyRunes)
-                        obj.SetActive(true);
-                    //Debug.Log("Easy selected");
-                }
-                else
-                {
-                    foreach (var obj in runes)
-                        obj.SetActive(true);
-                    //Debug.Log("Hard selected");
-                }
                 GameSession();
                 
                 forceOnce = false;
@@ -106,52 +87,11 @@ public class GameController : MonoBehaviour
 
     public void GameSession()
     {
-        for (int i = 0; i < runes.Count; i++)
-        {
-            runes[i].GetComponent<Button>().interactable = true;
-            Debug.Log("Loop Ran");
-        }
         // Determine who goes first
-        int player1 = 1;
-        int player2 = 2;
         currentPlayer = username1;
+        Debug.Log(currentPlayer);
 
-        int playerPick = rand.Next(player1, 3);
-        Debug.Log(playerPick);
-
-        if(playerPick == player1)
-        {
-            currentPlayer = username1;
-            playerTurn.text = username1;
-            Debug.Log("Player 1 begins first.");
-        }
-        else if (playerPick == player2)
-        {
-            currentPlayer = username2;
-            playerTurn.text = username2;
-            Debug.Log("Player 2 begins first.");
-        }
-        turnDisplay.SetActive(true);
-        if (difficulty == 0)
-        {
-            selectedRow = 2;
-            Debug.Log("SelectedRow: " + selectedRow);
-        }
-        else if (difficulty == 1)
-        {
-            selectedRow = 3;
-            Debug.Log("SelectedRow: " + selectedRow);
-        }
-
-        // With whoever goes first, allow the player to click the rune, depending on how much they want to click in one row
-
-
-        // When the player is done with their choice, move the turn over to the next player
-
-
-        // When there is only one rune left, move the seesion over to gameover
-
-
+        //turnDisplay.SetActive(true);
     }
 
     public void SetUserName1(string val)
@@ -163,11 +103,21 @@ public class GameController : MonoBehaviour
     {
         username2 = val;
     }
-
-
-    public void setRow(int row)
+    public void SetStone()
     {
-        runeRow = row;
+        var stone1 = whiteStone;
+
+        if(username1 == currentPlayer)
+        {
+            stone1 = whiteStone;
+        }
+        
+        if(username2 == currentPlayer)
+        {
+            stone1 = blackStone;
+        }
+
+        Debug.Log(stone1);
     }
 
     public void ChangePlayer()
@@ -185,47 +135,6 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public void RuneClicked(int runeIndex)
-    {
-        //if player = non computer run normally, otherwise do a random selection between 1-3 (safety might be needed)
-        if(runeRow == selectedRow)
-        {
-            Debug.Log("Rune Index: " + runeIndex);
-            Debug.Log("Rune Row: " + runeRow);
-            if (runeIndex == 0)
-            {
-                GameOver();
-            }
-            //Disable all runes after the indexed rune
-            Debug.Log("Before For loop");
-            for (int i = runeIndex; i < runes.Count; i++)
-            {
-                //runes[i].SetActive(false);
-                runes[i].GetComponent<Button>().interactable = false;
-                Debug.Log("Loop Ran");
-            }
-
-            if (runeIndex == 9)
-            {
-                //Set to row 3
-                selectedRow = 2;
-                Debug.Log("Setting rune row to 3");
-            }
-            if (runeIndex == 4)
-            {
-                //Set to row 2
-                selectedRow = 1;
-                Debug.Log("Setting rune row to 2");
-            }
-            if (runeIndex == 1)
-            {
-                //Set to row 1
-                selectedRow = 0;
-                Debug.Log("Setting rune row to 1");
-            }
-            ChangePlayer();
-        }
-    }
 
     public void GameOver()
     {
@@ -239,22 +148,6 @@ public class GameController : MonoBehaviour
         }
 
         gameOverPanel.SetActive(true);
-        foreach (var obj in runes)
-            obj.SetActive(true);
-        for (int i = 0; i < runes.Count; i++)
-        {
-            runes[i].GetComponent<Button>().interactable = true;
-        }
-        foreach (var obj in runes)
-            obj.SetActive(false);
-    }
-
-    
-
-    public void DifficultyChanged()
-    {
-        difficulty = (int)GameObject.Find("DifficultySlider").GetComponent<Slider>().value;
-        Console.WriteLine("difficulty: " + difficulty);
     }
 }
 

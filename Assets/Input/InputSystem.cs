@@ -24,6 +24,14 @@ public class @InputSystem : IInputActionCollection, IDisposable
                     ""id"": ""9931b12e-5ea1-4974-83f5-505a9eb09892"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
+                    ""interactions"": ""Tap""
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""0ddd926e-1635-4175-925b-6e3f742d5e3f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
                     ""interactions"": """"
                 }
             ],
@@ -36,6 +44,28 @@ public class @InputSystem : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""LMB"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dbe09ec5-040b-4723-9140-045966031bf9"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""93312185-5f4e-419a-92bf-a7bd16a2c35c"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -74,6 +104,7 @@ public class @InputSystem : IInputActionCollection, IDisposable
         // Game
         m_Game = asset.FindActionMap("Game", throwIfNotFound: true);
         m_Game_LMB = m_Game.FindAction("LMB", throwIfNotFound: true);
+        m_Game_Pause = m_Game.FindAction("Pause", throwIfNotFound: true);
         // Main
         m_Main = asset.FindActionMap("Main", throwIfNotFound: true);
         m_Main_Newaction = m_Main.FindAction("New action", throwIfNotFound: true);
@@ -127,11 +158,13 @@ public class @InputSystem : IInputActionCollection, IDisposable
     private readonly InputActionMap m_Game;
     private IGameActions m_GameActionsCallbackInterface;
     private readonly InputAction m_Game_LMB;
+    private readonly InputAction m_Game_Pause;
     public struct GameActions
     {
         private @InputSystem m_Wrapper;
         public GameActions(@InputSystem wrapper) { m_Wrapper = wrapper; }
         public InputAction @LMB => m_Wrapper.m_Game_LMB;
+        public InputAction @Pause => m_Wrapper.m_Game_Pause;
         public InputActionMap Get() { return m_Wrapper.m_Game; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -144,6 +177,9 @@ public class @InputSystem : IInputActionCollection, IDisposable
                 @LMB.started -= m_Wrapper.m_GameActionsCallbackInterface.OnLMB;
                 @LMB.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnLMB;
                 @LMB.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnLMB;
+                @Pause.started -= m_Wrapper.m_GameActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnPause;
             }
             m_Wrapper.m_GameActionsCallbackInterface = instance;
             if (instance != null)
@@ -151,6 +187,9 @@ public class @InputSystem : IInputActionCollection, IDisposable
                 @LMB.started += instance.OnLMB;
                 @LMB.performed += instance.OnLMB;
                 @LMB.canceled += instance.OnLMB;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
             }
         }
     }
@@ -191,6 +230,7 @@ public class @InputSystem : IInputActionCollection, IDisposable
     public interface IGameActions
     {
         void OnLMB(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
     public interface IMainActions
     {
