@@ -36,9 +36,20 @@ public class Grid
         //SetValue(2, 1, 56);
     }
 
-    private Vector3 GetWorldPosition(int x, int y)
+    public void GetMouseXY(out int x, out int y)
+    {
+        Vector3 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        GetXY(position, out x, out y);
+    }
+
+    public Vector3 GetWorldPosition(int x, int y)
     {
         return new Vector3(x, y) * cellSize + originPosition;
+    }
+
+    public Vector3 GetWorldCellPosition(int x, int y)
+    {
+        return new Vector3(x, y) * cellSize + originPosition + new Vector3(cellSize * 0.5f, cellSize *0.5f, 0.0f);
     }
 
     private void GetXY(Vector3 worldPosition, out int x, out int y)
