@@ -469,7 +469,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &133012892
 RectTransform:
   m_ObjectHideFlags: 0
@@ -577,7 +577,6 @@ MonoBehaviour:
   MainMenuPanel: {fileID: 493964295}
   PausePanel: {fileID: 878793184}
   GameSettingsPanel1: {fileID: 118509869}
-  GameSettingsPanel2: {fileID: 0}
 --- !u!1 &152907344
 GameObject:
   m_ObjectHideFlags: 0
@@ -8063,7 +8062,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1884676400
 MonoBehaviour:
   m_ObjectHideFlags: 0
