@@ -6,23 +6,19 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuController : MonoBehaviour
 {
-    public GameObject OptionsPanel, CreditsPanel, InstructionsPanel, GameOverPanel, MainMenuPanel, PausePanel, GameSettingsPanel1, GameSettingsPanel2;
+    public GameObject OptionsPanel, CreditsPanel, InstructionsPanel, GameOverPanel, MainMenuPanel, PausePanel, GameSettingsPanel1;
 
     public void StartGame()
     {
-        gameObject.SetActive(true);
         MainMenuPanel.SetActive(false);
         PausePanel.SetActive(false);
         GameSettingsPanel1.SetActive(false);
-        GameSettingsPanel2.SetActive(false);
         GameController.Instance.state = eState.GAME;
         Console.WriteLine("Start Game menu controller");
     }
 
     public void StartGameSettings1()
     {
-        //Names
-        //gameObject.SetActive(false);
         MainMenuPanel.SetActive(false);
         GameOverPanel.SetActive(false);
         GameSettingsPanel1.SetActive(true);
@@ -30,20 +26,8 @@ public class MainMenuController : MonoBehaviour
         Console.WriteLine("Settings1 menu controller");
     }
 
-    public void StartGameSettings2()
-    {
-        //Difficulty
-        //gameObject.SetActive(false);
-        GameOverPanel.SetActive(false);
-        GameSettingsPanel1.SetActive(false);
-        GameSettingsPanel2.SetActive(true);
-        GameController.Instance.state = eState.MENU;
-        Console.WriteLine("Settings2 menu controller");
-    }
-
     public void Options()
     {
-        gameObject.SetActive(false);
         OptionsPanel.SetActive(true);
         MainMenuPanel.SetActive(false);
         PausePanel.SetActive(false);
@@ -52,7 +36,6 @@ public class MainMenuController : MonoBehaviour
 
     public void Instructions()
     {
-        gameObject.SetActive(false);
         InstructionsPanel.SetActive(true);
         MainMenuPanel.SetActive(false);
         PausePanel.SetActive(false);
@@ -61,7 +44,6 @@ public class MainMenuController : MonoBehaviour
 
     public void Credits()
     {
-        gameObject.SetActive(false);
         MainMenuPanel.SetActive(false);
         CreditsPanel.SetActive(true);
         Console.WriteLine("Credits menu controller");
@@ -103,6 +85,7 @@ public class MainMenuController : MonoBehaviour
         CreditsPanel.SetActive(false);
         InstructionsPanel.SetActive(false);
         GameOverPanel.SetActive(false);
+        GameSettingsPanel1.SetActive(false);
         GameController.Instance.state = eState.TITLE;
         Console.WriteLine("BacktoMenu menu controller");
     }
@@ -110,7 +93,6 @@ public class MainMenuController : MonoBehaviour
     //Back to pause menu
     public void BackToPause()
     {
-        gameObject.SetActive(false);
         PausePanel.SetActive(true);
         MainMenuPanel.SetActive(false);
         OptionsPanel.SetActive(false);
@@ -123,7 +105,6 @@ public class MainMenuController : MonoBehaviour
 
     public void GameOver()
     {
-        gameObject.SetActive(false);
         GameOverPanel.SetActive(true);
         GameController.Instance.state = eState.MENU;
         Console.WriteLine("Gameover menu controller");
