@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class GridTest : MonoBehaviour
 {
-    public GameObject marker;
+    public GameObject whiteMarker;
+    public GameObject blackMarker;
 
     Grid grid;
 
@@ -20,7 +21,8 @@ public class GridTest : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Vector3 position = grid.GetWorldCellPosition(x, y);
-            Instantiate(marker, position, Quaternion.identity);
+            Instantiate(whiteMarker, position, Quaternion.identity);
+            Instantiate(blackMarker, position, Quaternion.identity);
         }
     }
 }
