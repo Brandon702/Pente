@@ -22,7 +22,7 @@ public class GridTest : MonoBehaviour
         {
             Vector3 position = grid.GetWorldCellPosition(x, y);
             Instantiate(whiteMarker, position, Quaternion.identity);
-            Instantiate(blackMarker, position, Quaternion.identity);
+            //Instantiate(blackMarker, position, Quaternion.identity);
         }
     }
 }
