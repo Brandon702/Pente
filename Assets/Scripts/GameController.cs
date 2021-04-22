@@ -23,17 +23,17 @@ public class GameController : MonoBehaviour
 
     private void Awake()
     {
-        if(_instance == null)
+        if (_instance == null)
         {
             _instance = this;
         }
         else
         {
-            
+
         }
     }
     #endregion
-    
+
     [Header("Players")]
     public string username1 = "Player";
     public string username2 = "Jonathan";
@@ -50,17 +50,22 @@ public class GameController : MonoBehaviour
     public TextMeshProUGUI playerTurn;
     public TextMeshProUGUI winner;
     public InputSystem input;
+    public static int[] row = new int[19];
+    public static int[] col = new int[19];
+    //int[][] gameBoard = new int[19][19];
+    int[,] gameBoard = new int[19,19];
 
     void Start()
     {
         grid = new Grid(19, 19, 2.09f, new Vector3(0, 0));
+        
     }
 
     void Update()
     {
         if (state == eState.MENU)
         {
-            turnDisplay.SetActive(false);
+            //turnDisplay.SetActive(false);
 
             forceOnce = true;
         }
@@ -84,23 +89,35 @@ public class GameController : MonoBehaviour
                 if (currentPlayer.Equals(username1))
                 {
                     Instantiate(whiteMarker, position, Quaternion.identity);
-                    currentPlayer = username2;
                 }
                 else if (currentPlayer.Equals(username2))
                 {
                     Instantiate(blackMarker, position, Quaternion.identity);
-                    currentPlayer = username1;
                 }
+                //Add a value to a 2D array based on the current player in the position that was used
+                AddToBoard();
                 VictoryCheck();
                 CaptureCheck();
                 Annoucement();
+                ChangePlayer();
             }
         }
     }
-
+    public void AddToBoard()
+    {
+        int playerValue = 0;
+        if (currentPlayer.Equals(username1))
+        {
+            playerValue = 1;
+        }
+        else
+        {
+            playerValue = 2;
+        }
+    }
     public void VictoryCheck()
     {
-        //Check in 4 directions for a 5x1 of same game objects
+
     }
 
     public void CaptureCheck()
