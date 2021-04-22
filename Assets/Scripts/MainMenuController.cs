@@ -14,7 +14,7 @@ public class MainMenuController : MonoBehaviour
         PausePanel.SetActive(false);
         GameSettingsPanel1.SetActive(false);
         GameController.Instance.state = eState.GAME;
-        Console.WriteLine("Start Game menu controller");
+        Debug.Log("Start Game");
     }
 
     public void StartGameSettings1()
@@ -23,7 +23,7 @@ public class MainMenuController : MonoBehaviour
         GameOverPanel.SetActive(false);
         GameSettingsPanel1.SetActive(true);
         GameController.Instance.state = eState.MENU;
-        Console.WriteLine("Settings1 menu controller");
+        Debug.Log("Settings1 menu");
     }
 
     public void Options()
@@ -31,7 +31,7 @@ public class MainMenuController : MonoBehaviour
         OptionsPanel.SetActive(true);
         MainMenuPanel.SetActive(false);
         PausePanel.SetActive(false);
-        Console.WriteLine("Options menu controller");
+        Debug.Log("Options menu");
     }
 
     public void Instructions()
@@ -39,14 +39,14 @@ public class MainMenuController : MonoBehaviour
         InstructionsPanel.SetActive(true);
         MainMenuPanel.SetActive(false);
         PausePanel.SetActive(false);
-        Console.WriteLine("Instructions menu controller");
+        Debug.Log("Instructions menu");
     }
 
     public void Credits()
     {
         MainMenuPanel.SetActive(false);
         CreditsPanel.SetActive(true);
-        Console.WriteLine("Credits menu controller");
+        Debug.Log("Credits menu");
     }
 
     public void Back()
@@ -117,5 +117,10 @@ public class MainMenuController : MonoBehaviour
     public void ExitGame()
     {
         Application.Quit();
+    }
+
+    private void Start()
+    {
+        gameObject.SetActive(true);
     }
 }

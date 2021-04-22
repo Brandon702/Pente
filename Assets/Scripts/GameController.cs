@@ -35,32 +35,27 @@ public class GameController : MonoBehaviour
     #endregion
     
     [Header("Players")]
-    string username1 = "Player";
-    string username2 = "Jonathan";
+    public string username1 = "Player";
+    public string username2 = "Jonathan";
 
     [Header("Other variables")]
     public eState state = eState.TITLE;
     public GameObject gameOverPanel;
     private GameObject turnDisplay;
-    public GameObject whiteStone;
-    public GameObject blackStone;
-    //public GameObject winnerDisplay;
-    public System.Random rand = new System.Random();
+    public GameObject whiteMarker, blackMarker;
     public bool forceOnce = true;
     public Grid grid;
 
-    string currentPlayer;
+    public string currentPlayer;
     public TextMeshProUGUI playerTurn;
     public TextMeshProUGUI winner;
-    int selectedRow=99999;
     public InputSystem input;
 
-    // Start is called before the first frame update
     void Start()
     {
+        grid = new Grid(19, 19, 2.09f, new Vector3(0, 0));
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (state == eState.MENU)
@@ -81,10 +76,41 @@ public class GameController : MonoBehaviour
                 
                 forceOnce = false;
             }
+            grid.GetMouseXY(out int x, out int y);
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                Vector3 position = grid.GetWorldCellPosition(x, y);
+                if (currentPlayer.Equals(username1))
+                {
+                    Instantiate(whiteMarker, position, Quaternion.identity);
+                    currentPlayer = username2;
+                }
+                else if (currentPlayer.Equals(username2))
+                {
+                    Instantiate(blackMarker, position, Quaternion.identity);
+                    currentPlayer = username1;
+                }
+                VictoryCheck();
+                CaptureCheck();
+                Annoucement();
+            }
         }
+    }
 
-        
+    public void VictoryCheck()
+    {
+        //Check in 4 directions for a 5x1 of same game objects
+    }
 
+    public void CaptureCheck()
+    {
+        //Check in 4 directions for a 4x1 where index [0] & [3] are the same & [1] & [2] are the same
+    }
+
+    public void Annoucement()
+    {
+        //Check in 4 directions for a 3x1 or 4x1 & display that information
     }
 
     public void GameSession()
@@ -107,16 +133,16 @@ public class GameController : MonoBehaviour
     }
     public void SetStone()
     {
-        var stone1 = whiteStone;
+        var stone1 = whiteMarker;
 
-        if(username1 == currentPlayer)
+        if(currentPlayer.Equals(username1))
         {
-            stone1 = whiteStone;
+            stone1 = whiteMarker;
         }
         
-        if(username2 == currentPlayer)
+        if(currentPlayer.Equals(username2))
         {
-            stone1 = blackStone;
+            stone1 = blackMarker;
         }
 
         Debug.Log(stone1);
