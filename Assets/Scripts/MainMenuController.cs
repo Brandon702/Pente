@@ -8,6 +8,11 @@ public class MainMenuController : MonoBehaviour
 {
     public GameObject OptionsPanel, CreditsPanel, InstructionsPanel, GameOverPanel, MainMenuPanel, PausePanel, GameSettingsPanel1;
 
+    private void Start()
+    {
+        gameObject.SetActive(true);
+        GameController.Instance.state = eState.TITLE;
+    }
     public void StartGame()
     {
         MainMenuPanel.SetActive(false);
@@ -119,8 +124,4 @@ public class MainMenuController : MonoBehaviour
         Application.Quit();
     }
 
-    private void Start()
-    {
-        gameObject.SetActive(true);
-    }
 }
