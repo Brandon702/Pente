@@ -10,6 +10,7 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
+
     #region Singleton
     private static GameController _instance;
 
@@ -52,13 +53,13 @@ public class GameController : MonoBehaviour
     public InputSystem input;
     public static int[] row = new int[19];
     public static int[] col = new int[19];
-    //int[][] gameBoard = new int[19][19];
-    int[,] gameBoard = new int[19,19];
+    public int[,] gameBoard = new int[19,19];
+
+    public MainMenuController mainMenuController;
 
     void Start()
     {
         grid = new Grid(19, 19, 2.09f, new Vector3(0, 0));
-        
     }
 
     void Update()
@@ -86,38 +87,118 @@ public class GameController : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 Vector3 position = grid.GetWorldCellPosition(x, y);
+                int marker = 0;
                 if (currentPlayer.Equals(username1))
                 {
                     Instantiate(whiteMarker, position, Quaternion.identity);
+                    marker = 1;
+                    //Add playervalue to 2D array here
                 }
                 else if (currentPlayer.Equals(username2))
                 {
                     Instantiate(blackMarker, position, Quaternion.identity);
+                    marker = 2;
+                    //Add playervalue to 2D array here
                 }
                 //Add a value to a 2D array based on the current player in the position that was used
-                AddToBoard();
-                VictoryCheck();
+                AddToBoard(marker, x, y);
+                int winner = VictoryCheck();
                 CaptureCheck();
                 Annoucement();
                 ChangePlayer();
             }
         }
     }
-    public void AddToBoard()
+    public void AddToBoard(int marker, int x, int y)
     {
-        int playerValue = 0;
-        if (currentPlayer.Equals(username1))
-        {
-            playerValue = 1;
-        }
-        else
-        {
-            playerValue = 2;
-        }
+        gameBoard[x,y] = marker;
     }
-    public void VictoryCheck()
+    public int VictoryCheck()
     {
+        int winner = 0;
+        for (int y = 0; y < 19; y++)
+        {
+            for (int x = 0; x < 19; x++)
+            {
+                if (gameBoard[x,y] != 0)
+                {
+                    int marker = gameBoard[x, y];
+                    bool success = CheckHorizontal(marker, x, y, 5) || CheckVertical(marker, x, y, 5) || CheckDiagonalLeft(marker, x, y, 5) || CheckDiagonalRight(marker, x, y, 5);
+                    if (success)
+                    {
+                        winner = marker;
+                        Debug.Log("Winner: " +  marker);
+                        mainMenuController.GameOver();
+                    }
+                    //break;
+                }
+            }
+        }
 
+        return winner;
+    }       
+    bool CheckHorizontal(int marker, int x, int y, int size)
+    {
+        //if (x < 4 || x > 15) return false;
+
+        bool success = true;
+        for (int cx = 0; cx < size; cx++)
+        {
+            if (gameBoard[x + cx, y] != marker)
+            {
+                success = false;
+                break;
+            }
+        }
+
+        return success;
+    }
+
+    bool CheckVertical(int marker, int x, int y, int size)
+    {
+        //if (y < 4 || y > 15) return false;
+
+        bool success = true;
+        for (int cy = 0; cy < size; cy++)
+        {
+            if (gameBoard[x, y + cy] != marker)
+            {
+                success = false;
+                break;
+            }
+        }
+
+        return success;
+    }
+
+    bool CheckDiagonalLeft(int marker, int x, int y, int size)
+    {
+        bool success = true;
+        for(int cy=0, cx=0; cy < size && cx < size; cy++, cx++)
+        {
+            if (gameBoard[x + cx, y + cy] != marker)
+            {
+                success = false;
+                break;
+            }
+        }
+
+        return success;
+    }
+
+    bool CheckDiagonalRight(int marker, int x, int y, int size)
+    {
+        bool success = true;
+        for (int cy = 0, cx = 0; cy < size && cx < size; cy--, cx++)
+        {
+            if (gameBoard[x + cx, y + cy] != marker)
+            {
+                success = false;
+                break;
+            }
+        }
+
+        return success;
     }
 
     public void CaptureCheck()
@@ -128,6 +209,7 @@ public class GameController : MonoBehaviour
     public void Annoucement()
     {
         //Check in 4 directions for a 3x1 or 4x1 & display that information
+
     }
 
     public void GameSession()
@@ -171,14 +253,15 @@ public class GameController : MonoBehaviour
         if(currentPlayer == username1)
         {
             currentPlayer = username2;
-            playerTurn.text = username2;
+            //playerTurn.text = username2;
         }
         else if (currentPlayer == username2)
         {
             currentPlayer = username1;
-            playerTurn.text = username1;
+            //playerTurn.text = username1;
         }
     }
+
 
 
     public void GameOver()

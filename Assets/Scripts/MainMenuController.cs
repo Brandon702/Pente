@@ -6,7 +6,17 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuController : MonoBehaviour
 {
-    public GameObject OptionsPanel, CreditsPanel, InstructionsPanel, GameOverPanel, MainMenuPanel, PausePanel, GameSettingsPanel1;
+    public GameObject OptionsPanel;
+    public GameObject CreditsPanel;
+    public GameObject InstructionsPanel;
+    public GameObject GameOverPanel;
+    public GameObject MainMenuPanel;
+    public GameObject PausePanel;
+    public GameObject GameSettingsPanel1;
+    public GameController gameController;
+
+    public GameObject blackMarker;
+    public GameObject whiteMarker;
 
     private void Start()
     {
@@ -15,9 +25,11 @@ public class MainMenuController : MonoBehaviour
     }
     public void StartGame()
     {
+        
         MainMenuPanel.SetActive(false);
         PausePanel.SetActive(false);
         GameSettingsPanel1.SetActive(false);
+        GameOverPanel.SetActive(false);
         GameController.Instance.state = eState.GAME;
         Debug.Log("Start Game");
     }
@@ -112,11 +124,26 @@ public class MainMenuController : MonoBehaviour
     {
         GameOverPanel.SetActive(true);
         GameController.Instance.state = eState.MENU;
+
+        //Clear board
+        GameObject[] markers = GameObject.FindGameObjectsWithTag("Marker");
+        foreach (GameObject marker in markers)
+        {
+            GameObject.Destroy(marker);
+        }
+        //Clear gameboard
+
+        //If game is buggy, its literally this:
+        for (int i = 0; i < gameController.gameBoard.Length; i++)
+        {
+            Array.Clear(gameController.gameBoard, i, gameController.gameBoard.Length - 1);
+
+        }
         Console.WriteLine("Gameover menu controller");
     }
     public void ResetApplication()
     {
-        SceneManager.LoadScene("Nim");
+        SceneManager.LoadScene("Pente");
     }
 
     public void ExitGame()

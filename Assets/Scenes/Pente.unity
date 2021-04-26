@@ -652,6 +652,9 @@ MonoBehaviour:
   MainMenuPanel: {fileID: 493964295}
   PausePanel: {fileID: 878793184}
   GameSettingsPanel1: {fileID: 118509869}
+  gameController: {fileID: 1506510301}
+  blackMarker: {fileID: 430463994521501101, guid: a4c701d282287c140b0361607057c6fa, type: 3}
+  whiteMarker: {fileID: 5970896625351906552, guid: f9098ddf2d6c3ae46a43583113bfeace, type: 3}
 --- !u!1 &152907344
 GameObject:
   m_ObjectHideFlags: 0
@@ -7770,6 +7773,8 @@ MonoBehaviour:
   currentPlayer: 
   playerTurn: {fileID: 0}
   winner: {fileID: 0}
+  markers: []
+  mainMenuController: {fileID: 133012896}
 --- !u!4 &1506510302
 Transform:
   m_ObjectHideFlags: 0
@@ -9130,7 +9135,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 133012896}
         m_TargetAssemblyTypeName: MainMenuController, Assembly-CSharp
-        m_MethodName: Back
+        m_MethodName: ResetApplication
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
