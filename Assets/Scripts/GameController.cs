@@ -50,6 +50,9 @@ public class GameController : MonoBehaviour
     public string currentPlayer;
     public TextMeshProUGUI playerTurn;
     public TextMeshProUGUI winner;
+    public TextMeshProUGUI player1Display;
+    public TextMeshProUGUI player2Display;
+    public TextMeshProUGUI eventDisplay;
     public InputSystem input;
     public static int[] row = new int[19];
     public static int[] col = new int[19];
@@ -128,6 +131,7 @@ public class GameController : MonoBehaviour
                     {
                         winner = marker;
                         Debug.Log("Winner: " +  marker);
+                        GameOver();
                         mainMenuController.GameOver();
                     }
                     //break;
@@ -209,13 +213,67 @@ public class GameController : MonoBehaviour
     public void Annoucement()
     {
         //Check in 4 directions for a 3x1 or 4x1 & display that information
+        Tria();
+        Tessera();
+    }
 
+    public int Tria()
+    {
+        int player = 0;
+        for (int y = 0; y < 19; y++)
+        {
+            for (int x = 0; x < 19; x++)
+            {
+                if (gameBoard[x, y] != 0)
+                {
+                    int marker = gameBoard[x, y];
+                    bool success = CheckHorizontal(marker, x, y, 3) || CheckVertical(marker, x, y, 3) || CheckDiagonalLeft(marker, x, y, 3) || CheckDiagonalRight(marker, x, y, 3);
+                    if (success)
+                    {
+                        player = marker;
+                        //Announce
+                        eventDisplay.text = currentPlayer + " has achieved Tria";
+                    }
+                    //break;
+                }
+            }
+        }
+
+        return player;
+    }
+
+    public int Tessera()
+    {
+        int player = 0;
+        for (int y = 0; y < 19; y++)
+        {
+            for (int x = 0; x < 19; x++)
+            {
+                if (gameBoard[x, y] != 0)
+                {
+                    int marker = gameBoard[x, y];
+                    bool success = CheckHorizontal(marker, x, y, 4) || CheckVertical(marker, x, y, 4) || CheckDiagonalLeft(marker, x, y, 4) || CheckDiagonalRight(marker, x, y, 4);
+                    if (success)
+                    {
+                        player = marker;
+                        //Announce
+                        eventDisplay.text = currentPlayer + " has achieved Tessera";
+                    }
+                    //break;
+                }
+            }
+        }
+
+        return player;
     }
 
     public void GameSession()
     {
         // Determine who goes first
         currentPlayer = username1;
+        playerTurn.text = username1 + "'s turn";
+        player1Display.text = username1;
+        player2Display.text = username2;
         Debug.Log(currentPlayer);
 
         //turnDisplay.SetActive(true);
@@ -253,12 +311,12 @@ public class GameController : MonoBehaviour
         if(currentPlayer == username1)
         {
             currentPlayer = username2;
-            //playerTurn.text = username2;
+            playerTurn.text = username2 + "'s turn";
         }
         else if (currentPlayer == username2)
         {
             currentPlayer = username1;
-            //playerTurn.text = username1;
+            playerTurn.text = username1 + "'s turn";
         }
     }
 
@@ -274,6 +332,7 @@ public class GameController : MonoBehaviour
         {
             winner.text = username1 + " has won!";
         }
+        eventDisplay.text = "None";
 
         gameOverPanel.SetActive(true);
     }
