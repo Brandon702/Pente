@@ -54,15 +54,18 @@ public class GameController : MonoBehaviour
     public TextMeshProUGUI player2Display;
     public TextMeshProUGUI eventDisplay;
     public InputSystem input;
-    public static int[] row = new int[19];
-    public static int[] col = new int[19];
-    public int[,] gameBoard = new int[19,19];
+    public static int size = 20;
+    public static int[] row = new int[size];
+    public static int[] col = new int[size];
+    public int[,] gameBoard = new int[size,size];
 
     public MainMenuController mainMenuController;
+    public Timer timer;
 
     void Start()
     {
-        grid = new Grid(19, 19, 2.09f, new Vector3(0, 0));
+        grid = new Grid(size, size, 2.09f, new Vector3(0, 0));
+        timer.StartTimer();
     }
 
     void Update()
@@ -78,6 +81,22 @@ public class GameController : MonoBehaviour
         if (state == eState.GAME)
         {
             //If on menu state deactivate
+            timer.UpdateTime();
+            if(timer.timerText.text == "0:10.00")
+            {
+                if(currentPlayer.Equals(username2))
+                {
+                    currentPlayer = username1;
+                    playerTurn.text = username1;
+                    timer.StartTimer();
+                }    
+                else if(currentPlayer.Equals(username1))
+                {
+                    currentPlayer = username2;
+                    playerTurn.text = username2;
+                    timer.StartTimer();
+                }
+            }
 
             if (forceOnce == true)
             {
@@ -86,6 +105,12 @@ public class GameController : MonoBehaviour
                 forceOnce = false;
             }
             grid.GetMouseXY(out int x, out int y);
+
+            if(Input.GetKeyDown(KeyCode.P))
+            {
+                mainMenuController.Pause();
+                timer.StopTimer();
+            }
 
             if (Input.GetMouseButtonDown(0))
             {
@@ -106,6 +131,7 @@ public class GameController : MonoBehaviour
                 //Add a value to a 2D array based on the current player in the position that was used
                 AddToBoard(marker, x, y);
                 int winner = VictoryCheck();
+                timer.StartTimer();
                 CaptureCheck();
                 Annoucement();
                 ChangePlayer();
@@ -232,7 +258,7 @@ public class GameController : MonoBehaviour
                     {
                         player = marker;
                         //Announce
-                        eventDisplay.text = currentPlayer + " has achieved Tria";
+                        eventDisplay.text = "Someone has achieved Tria";
                     }
                     //break;
                 }
@@ -257,7 +283,7 @@ public class GameController : MonoBehaviour
                     {
                         player = marker;
                         //Announce
-                        eventDisplay.text = currentPlayer + " has achieved Tessera";
+                        eventDisplay.text = "Someone has achieved Tessera";
                     }
                     //break;
                 }

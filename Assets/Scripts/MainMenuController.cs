@@ -17,6 +17,7 @@ public class MainMenuController : MonoBehaviour
 
     public GameObject blackMarker;
     public GameObject whiteMarker;
+    public Timer timer;
 
     private void Start()
     {
@@ -25,7 +26,7 @@ public class MainMenuController : MonoBehaviour
     }
     public void StartGame()
     {
-        
+        timer.StartTimer();
         MainMenuPanel.SetActive(false);
         PausePanel.SetActive(false);
         GameSettingsPanel1.SetActive(false);
@@ -63,6 +64,7 @@ public class MainMenuController : MonoBehaviour
     {
         MainMenuPanel.SetActive(false);
         CreditsPanel.SetActive(true);
+        PausePanel.SetActive(false);
         Debug.Log("Credits menu");
     }
 
@@ -103,6 +105,7 @@ public class MainMenuController : MonoBehaviour
         InstructionsPanel.SetActive(false);
         GameOverPanel.SetActive(false);
         GameSettingsPanel1.SetActive(false);
+        ResetBoard();
         GameController.Instance.state = eState.TITLE;
         Console.WriteLine("BacktoMenu menu controller");
     }
@@ -122,16 +125,21 @@ public class MainMenuController : MonoBehaviour
 
     public void GameOver()
     {
+        timer.StopTimer();
         GameOverPanel.SetActive(true);
+        ResetBoard();
         GameController.Instance.state = eState.MENU;
+        Console.WriteLine("Gameover menu controller");
+    }
 
+    public void ResetBoard()
+    {
         //Clear board
         GameObject[] markers = GameObject.FindGameObjectsWithTag("Marker");
-        foreach (GameObject marker in markers)
+        foreach (GameObject Marker in markers)
         {
-            GameObject.Destroy(marker);
+            GameObject.Destroy(Marker);
         }
-        //Clear gameboard
 
         //If game is buggy, its literally this:
         for (int i = 0; i < gameController.gameBoard.Length; i++)
@@ -139,7 +147,7 @@ public class MainMenuController : MonoBehaviour
             Array.Clear(gameController.gameBoard, i, gameController.gameBoard.Length - 1);
 
         }
-        Console.WriteLine("Gameover menu controller");
+        gameController.currentPlayer = gameController.username1;
     }
     public void ResetApplication()
     {
