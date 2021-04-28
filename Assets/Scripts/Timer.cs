@@ -25,7 +25,7 @@ public class Timer : MonoBehaviour
     public void UpdateTime()
     {
         timer = Time.time - startTime;
-        timerText.text = TimeToString(timer);
+        timerText.text = TimeToString(timer).Replace(".", ":");
     }
 
     public void StopTimer()

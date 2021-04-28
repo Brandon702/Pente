@@ -58,6 +58,7 @@ public class GameController : MonoBehaviour
     public static int[] row = new int[size];
     public static int[] col = new int[size];
     public int[,] gameBoard = new int[size,size];
+    public AudioSource sfx;
 
     public MainMenuController mainMenuController;
     public Timer timer;
@@ -82,7 +83,7 @@ public class GameController : MonoBehaviour
         {
             //If on menu state deactivate
             timer.UpdateTime();
-            if(timer.timerText.text == "0:10.00")
+            if(timer.timerText.text == "0:10:00")
             {
                 if(currentPlayer.Equals(username2))
                 {
@@ -114,6 +115,7 @@ public class GameController : MonoBehaviour
 
             if (Input.GetMouseButtonDown(0))
             {
+                sfx.Play();
                 Vector3 position = grid.GetWorldCellPosition(x, y);
                 int marker = 0;
                 if (currentPlayer.Equals(username1))
@@ -167,6 +169,8 @@ public class GameController : MonoBehaviour
 
         return winner;
     }       
+
+    //Traditional 1 value check
     bool CheckHorizontal(int marker, int x, int y, int size)
     {
         //if (x < 4 || x > 15) return false;
@@ -230,6 +234,84 @@ public class GameController : MonoBehaviour
 
         return success;
     }
+
+    //Altered 2 value comparison check
+
+    bool AltCheckHorizontal(int marker, int x, int y, int size)
+    {
+        //if (x < 4 || x > 15) return false;
+
+        bool success = false;
+        for (int cx = 0; cx < size; cx++)
+        {
+            if (gameBoard[x + cx, y] != marker)
+            {
+                success = false;
+                break;
+            }
+            else
+            {
+                success = true;
+            }
+            
+        }
+
+        //Check first & last index == marker & that all inside != marker
+        //if ()
+        //{
+        //
+        //}
+
+        return success;
+    }
+
+    bool AltCheckVertical(int marker, int x, int y, int size)
+    {
+        //if (y < 4 || y > 15) return false;
+
+        bool success = true;
+        for (int cy = 0; cy < size; cy++)
+        {
+            if (gameBoard[x, y + cy] != marker)
+            {
+                success = false;
+                break;
+            }
+        }
+
+        return success;
+    }
+
+    bool AltCheckDiagonalLeft(int marker, int x, int y, int size, int player1)
+    {
+        bool success = true;
+        for (int cy = 0, cx = 0; cy < size && cx < size; cy++, cx++)
+        {
+            if (gameBoard[x + cx, y + cy] != marker)
+            {
+                success = false;
+                break;
+            }
+        }
+
+        return success;
+    }
+
+    bool AltCheckDiagonalRight(int marker, int x, int y, int size)
+    {
+        bool success = true;
+        for (int cy = 0, cx = 0; cy < size && cx < size; cy--, cx++)
+        {
+            if (gameBoard[x + cx, y + cy] != marker)
+            {
+                success = false;
+                break;
+            }
+        }
+
+        return success;
+    }
+
 
     public void CaptureCheck()
     {
