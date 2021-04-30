@@ -88,13 +88,13 @@ public class GameController : MonoBehaviour
                 if(currentPlayer.Equals(username2))
                 {
                     currentPlayer = username1;
-                    playerTurn.text = username1;
+                    playerTurn.text = username1 + "'s turn";
                     timer.StartTimer();
                 }    
                 else if(currentPlayer.Equals(username1))
                 {
                     currentPlayer = username2;
-                    playerTurn.text = username2;
+                    playerTurn.text = username2 + "'s turn";
                     timer.StartTimer();
                 }
             }
@@ -135,7 +135,10 @@ public class GameController : MonoBehaviour
                 int winner = VictoryCheck();
                 timer.StartTimer();
                 CaptureCheck();
-                Annoucement();
+                if (Tria() != 0 || Tessera() != 0)
+                {
+                    Annoucement();
+                }
                 ChangePlayer();
             }
         }
@@ -235,83 +238,6 @@ public class GameController : MonoBehaviour
         return success;
     }
 
-    //Altered 2 value comparison check
-
-    bool AltCheckHorizontal(int marker, int x, int y, int size)
-    {
-        //if (x < 4 || x > 15) return false;
-
-        bool success = false;
-        for (int cx = 0; cx < size; cx++)
-        {
-            if (gameBoard[x + cx, y] != marker)
-            {
-                success = false;
-                break;
-            }
-            else
-            {
-                success = true;
-            }
-            
-        }
-
-        //Check first & last index == marker & that all inside != marker
-        //if ()
-        //{
-        //
-        //}
-
-        return success;
-    }
-
-    bool AltCheckVertical(int marker, int x, int y, int size)
-    {
-        //if (y < 4 || y > 15) return false;
-
-        bool success = true;
-        for (int cy = 0; cy < size; cy++)
-        {
-            if (gameBoard[x, y + cy] != marker)
-            {
-                success = false;
-                break;
-            }
-        }
-
-        return success;
-    }
-
-    bool AltCheckDiagonalLeft(int marker, int x, int y, int size, int player1)
-    {
-        bool success = true;
-        for (int cy = 0, cx = 0; cy < size && cx < size; cy++, cx++)
-        {
-            if (gameBoard[x + cx, y + cy] != marker)
-            {
-                success = false;
-                break;
-            }
-        }
-
-        return success;
-    }
-
-    bool AltCheckDiagonalRight(int marker, int x, int y, int size)
-    {
-        bool success = true;
-        for (int cy = 0, cx = 0; cy < size && cx < size; cy--, cx++)
-        {
-            if (gameBoard[x + cx, y + cy] != marker)
-            {
-                success = false;
-                break;
-            }
-        }
-
-        return success;
-    }
-
 
     public void CaptureCheck()
     {
@@ -340,7 +266,14 @@ public class GameController : MonoBehaviour
                     {
                         player = marker;
                         //Announce
-                        eventDisplay.text = "Someone has achieved Tria";
+                        if (marker == 1)
+                        {
+                            eventDisplay.text = username1 + " has achieved Tria";
+                        }
+                        else if (marker == 2)
+                        {
+                            eventDisplay.text = username2 + " has achieved Tria";
+                        }
                     }
                     //break;
                 }
@@ -365,7 +298,15 @@ public class GameController : MonoBehaviour
                     {
                         player = marker;
                         //Announce
-                        eventDisplay.text = "Someone has achieved Tessera";
+
+                        if (marker == 1)
+                        {
+                            eventDisplay.text = username1 + " has achieved Tessera";
+                        }
+                        else if (marker == 2)
+                        {
+                            eventDisplay.text = username2 + " has achieved Tessera";
+                        }
                     }
                     //break;
                 }
